@@ -11,6 +11,8 @@ find_package(${META_PROJECT_NAME} REQUIRED HINTS "${CMAKE_CURRENT_SOURCE_DIR}/..
 # Executable name and options
 # 
 
+SET(OPTION_TEST_COVERAGE OFF CACHE BOOL "Test Coverage")
+
 # Target name
 set(target glbinding-test)
 
@@ -83,8 +85,8 @@ target_link_libraries(${target}
     glfw
     ${META_PROJECT_NAME}::glbinding
     gmock-dev
+    $<$<BOOL:${OPTION_TEST_COVERAGE}>:--coverage>
 )
-
 
 # 
 # Compile definitions
@@ -93,7 +95,7 @@ target_link_libraries(${target}
 target_compile_definitions(${target}
     PRIVATE
     ${DEFAULT_COMPILE_DEFINITIONS}
- 	$<$<BOOL:${OPTION_BUILD_GPU_TESTS}>:BUILD_GPU_TESTS>   
+ 	$<$<BOOL:${OPTION_BUILD_GPU_TESTS}>:BUILD_GPU_TESTS>
 )
 
 
@@ -104,6 +106,7 @@ target_compile_definitions(${target}
 target_compile_options(${target}
     PRIVATE
     ${DEFAULT_COMPILE_OPTIONS}
+    $<$<BOOL:${OPTION_TEST_COVERAGE}>:--coverage>
 )
 
 
